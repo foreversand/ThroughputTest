@@ -2,10 +2,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <EditTextPreference 
         android:summary="Length of test data copyed from one device to another" 
-        android:title="Length of Test Data" 
+        android:title="Length of Test Data Unit(Bytes)" 
         android:key="DataLength"/>
-    <ListPreference android:key="DataPattern" 
-        android:summary="Pattern of test data" 
-        android:title="Pattern of Test Data"/>
+    <ListPreference 
+        android:entryValues="@array/pattern_value" 
+        android:entries="@array/pattern" 
+        android:key="Data Pattern" 
+        android:title="Pattern of the test data" 
+        android:summary="the pattern of the test data"/>
 
 </PreferenceScreen>

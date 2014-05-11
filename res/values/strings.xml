@@ -4,5 +4,17 @@
     <string name="app_name">ThroughputTest</string>
     <string name="hello_world">Hello world!</string>
     <string name="parameters_settings">Settings</string>
-
+    
+    <string-array name="pattern">
+        <item> 01 02 03 </item>
+        <item> 55 AA </item>
+        <item> random value </item>
+    </string-array>
+    
+    <string-array name="pattern_value">
+        <item >0 </item>
+        <item >1 </item>
+        <item >2 </item>
+    </string-array>
+    
 </resources>
