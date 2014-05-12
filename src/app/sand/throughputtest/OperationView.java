@@ -21,6 +21,7 @@ import android.view.View;
 public class OperationView extends View implements
 		OnSharedPreferenceChangeListener {
 
+	private static final String VIEW_TAG = "View";
 	private static final int PADDING = 4;
 	private SharedPreferences mPref;
 	private Bitmap mSD;
@@ -37,6 +38,14 @@ public class OperationView extends View implements
 	private Rect mRectSD;
 	private Rect mRectIcon;
 
+	private int mSource;
+	private String mSourceName;
+	private int mDest;
+	private String mDestName;
+	private int mSourceSelected;
+	private Rect mRectMemSelect;
+	private Rect mRectCpuSelect;
+	private Rect mRectSDSelect;
 	
 	
 	
@@ -85,93 +94,149 @@ public class OperationView extends View implements
         mRectMem = new Rect(PADDING * 2, PADDING * 2, PADDING * 2 + mIconsize, PADDING * 2 + mIconsize);
         mRectCpu = new Rect(PADDING * 5 + mIconsize, PADDING * 2, PADDING * 5 + 2 * mIconsize, PADDING * 2 + mIconsize);
         mRectSD = new Rect(PADDING * 2, PADDING * 6 + mIconsize, PADDING * 2 + mIconsize, PADDING * 6 + 2 * mIconsize);
+        mRectMemSelect = new Rect(mRectMem);
+        mRectMemSelect.set(mRectMem.centerX() - mRectMem.width() / 4,
+        				   mRectMem.centerY() - mRectMem.height() / 4,
+        				   mRectMem.centerX() + mRectMem.width() / 4,
+        				   mRectMem.centerY() + mRectMem.height() / 4);
+        mRectCpuSelect = new Rect(mRectCpu);
+        mRectCpuSelect.set(mRectCpuSelect.centerX() - mRectCpuSelect.width() / 4,
+        				   mRectCpuSelect.centerY() - mRectCpuSelect.height() / 4,
+        				   mRectCpuSelect.centerX() + mRectCpuSelect.width() / 4,
+        				   mRectCpuSelect.centerY() + mRectCpuSelect.height() / 4);
+        mRectSDSelect = new Rect(mRectSD);
+        mRectSDSelect.set(mRectSDSelect.centerX() - mRectSDSelect.width() / 4,
+        		   		  mRectSDSelect.centerY() - mRectSDSelect.height() / 4,
+        		   		  mRectSDSelect.centerX() + mRectSDSelect.width() / 4,
+        		   		  mRectSDSelect.centerY() + mRectSDSelect.height() / 4);
+        mSourceSelected = 0;
         
         OnTouchListener onTouch = new OnTouchListener() {
 			
+			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				int action = event.getAction();
-				boolean isactionbegin = false;
+
 				boolean isactioncomplete = false;
 				int srcX = 0;
 				int srcY = 0; 
 				int destX = 0;
 				int destY = 0;
-				int source = 0;
-				int dest = 0;
-				String srcDisk = "UNKOWN DISK";
-				String destDisk = "UNKOWN DISK";
-				Log.d("View", "event: " + event.getAction());
+
+				
 				if(action == MotionEvent.ACTION_DOWN) {
-					isactionbegin = true;
+					
 					srcX = (int) event.getX();
 					srcY = (int) event.getY();
+
+					if(mRectMem.contains(srcX, srcY)) {
+						mSource = 1;
+						mSourceSelected = 1;
+						
+					}
+					else if(mRectCpu.contains(srcX, srcY)) {
+						mSource = 2;
+						mSourceSelected = 2;
+					}
+					else if(mRectSD.contains(srcX, srcY)) {
+						mSource = 3;
+						mSourceSelected = 3;
+					}
+					else {
+						mSource = 0;
+						mSourceSelected = 0;
+						
+					}
+					Log.d(VIEW_TAG, "event: " + event.getAction());
+					Log.d(VIEW_TAG, "srcX: " + srcX + " srcY:" + srcY + " source: "+ mSource + "\n");
+					
+					switch(mSource) {
+					case 0:
+						mSourceName = "UNKOWN DISK";
+						break;
+					case 1:
+						mSourceName = "Memory";
+						break;
+					case 2:
+						mSourceName = "Register";
+						break;
+					case 3:
+						mSourceName = "SD Card";
+						break;
+					default:
+						mSourceName = "UNKOWN DISK";
+						break;
+					}
+					postInvalidate();
+				}
+				else if(action == MotionEvent.ACTION_MOVE) {
+					switch(mSourceSelected) {
+					case 0:
+						break;
+					case 1:
+						mRectMemSelect.offset((int)event.getX() - mRectMemSelect.centerX(), 
+									          (int)event.getY() - mRectMemSelect.centerY());
+						break;
+					case 2:
+						mRectCpuSelect.offset((int)event.getX() - mRectCpuSelect.centerX(), 
+						          (int)event.getY() - mRectCpuSelect.centerY());
+						break;
+					case 3:
+						mRectSDSelect.offset((int)event.getX() - mRectSDSelect.centerX(), 
+						          (int)event.getY() - mRectSDSelect.centerY());
+						break;
+					default:
+						break;
+					}
+					postInvalidate();
 				}
 				else if(action == MotionEvent.ACTION_UP) {
+					mSourceSelected = 0;
 					destX = (int) event.getX();
 					destY = (int) event.getY();
+					if(mRectMem.contains(destX, destY)) {
+						mDest = 1;
+					}
+					else if(mRectCpu.contains(destX, destY)) {
+						mDest = 2;
+					}
+					else if(mRectSD.contains(destX, destY)) {
+						mDest = 3;
+					}
+					else {
+						mDest = 0;
+					}
+					
+					switch(mDest) {
+					case 0:
+						mDestName = "UNKOWN DISK";
+						break;
+					case 1:
+						mDestName = "Memory";
+						break;
+					case 2:
+						mDestName = "Register";
+						break;
+					case 3:
+						mDestName = "SD Card";
+						break;
+					default:
+						mDestName = "UNKOWN DISK";
+						break;
+					}		
+					Log.d(VIEW_TAG, "event: " + event.getAction());
+					Log.d(VIEW_TAG, "destX: " + destX + " destY:" + destY + " dest: "+ mDest + "\n");
 					isactioncomplete = true;
 				}
 				if(isactioncomplete) {
 					isactioncomplete = false;
-					if(mRectMem.contains(srcX, srcY)) {
-						source = 1;
-					}
-					else if(mRectCpu.contains(srcX, srcY)) {
-						source = 2;
-					}
-					else if(mRectSD.contains(srcX, srcY)) {
-						source = 3;
-					}
-					else {
-						source = 0;
-					}
-					if(mRectMem.contains(destX, destY)) {
-						dest = 1;
-					}
-					else if(mRectCpu.contains(destX, destY)) {
-						dest = 2;
-					}
-					else if(mRectSD.contains(destX, destY)) {
-						dest = 3;
-					}
-					else {
-						dest = 0;
-					}
-					switch(source) {
-					case 0:
-						srcDisk = "UNKOWN DISK";
-						break;
-					case 1:
-						srcDisk = "Memory";
-						break;
-					case 2:
-						srcDisk = "Register";
-					case 3:
-						srcDisk = "SD Card";
-						break;
-					default:
-						srcDisk = "UNKOWN DISK";	
-					}
-					switch(dest) {
-					case 0:
-						destDisk = "UNKOWN DISK";
-						break;
-					case 1:
-						destDisk = "Memory";
-						break;
-					case 2:
-						destDisk = "Register";
-					case 3:
-						destDisk = "SD Card";
-						break;
-					default:
-						destDisk = "UNKOWN DISK";
-					}
-				    
-					mResult = "copy form " + srcDisk + " to " + destDisk; 
-					if(source > 0 && dest > 0) {
-						mResult += " test result is:\n"; 
+					Log.d(VIEW_TAG, "finished srcX: " + srcX + " srcY:" + srcY + " source: "+ mSource + "\n");
+					Log.d(VIEW_TAG, "finished destX: " + destX + " destY:" + destY + " dest: "+ mDest + "\n");
+					mResult = "copy form " + mSourceName + " to " + mDestName; 
+					if(mSource > 0 && mDest > 0) {
+						mResult += " The test result is:\n"; 
 					}
 					else {
 						mResult += " Please Retry! \n";
@@ -194,17 +259,43 @@ public class OperationView extends View implements
     }
 
 	private void drawIcon(Canvas canvas) {
-		mPaint.setColor(0x80ffffff);
+		mPaint.setColor(0xffffffff);
     	mPaint.setStyle(Style.FILL_AND_STROKE);
     	mPaint.setFilterBitmap(false);
     	
     	canvas.drawRect(PADDING, PADDING, this.getWidth() - PADDING, PADDING * 3 + mIconsize, mPaint);
-    	canvas.drawBitmap(mMem, mRectIcon, mRectMem, mPaint);
-    	canvas.drawBitmap(mCpu, mRectIcon, mRectCpu, mPaint);  	
-    	
     	canvas.drawRect(PADDING, PADDING * 5 + mIconsize, this.getWidth() - PADDING, PADDING * 8 + 2 * mIconsize, mPaint);
-    	canvas.drawBitmap(mSD, mRectIcon, mRectSD, mPaint);
-        //canvas.drawBitmap(mSD, PADDING * 2, PADDING * 6 + mIconsize, mPaint);
+
+    	switch(mSourceSelected){
+    	case 0: 
+    		canvas.drawBitmap(mMem, mRectIcon, mRectMem, mPaint);
+    		canvas.drawBitmap(mCpu, mRectIcon, mRectCpu, mPaint);  	
+    		canvas.drawBitmap(mSD, mRectIcon, mRectSD, mPaint);
+    		break;
+    	case 1:
+    		
+    		canvas.drawBitmap(mCpu, mRectIcon, mRectCpu, mPaint);  	
+    		canvas.drawBitmap(mSD, mRectIcon, mRectSD, mPaint);
+    		canvas.drawBitmap(mMem, mRectIcon, mRectMemSelect, mPaint);
+    		break;
+    	case 2:
+    		canvas.drawBitmap(mMem, mRectIcon, mRectMem, mPaint);
+    			
+    		canvas.drawBitmap(mSD, mRectIcon, mRectSD, mPaint);
+    		canvas.drawBitmap(mCpu, mRectIcon, mRectCpuSelect, mPaint);  
+    		break;
+    	case 3:
+    		canvas.drawBitmap(mMem, mRectIcon, mRectMem, mPaint);
+    		canvas.drawBitmap(mCpu, mRectIcon, mRectCpu, mPaint);  	
+    		canvas.drawBitmap(mSD, mRectIcon, mRectSDSelect, mPaint);
+    		break;
+    	default:
+    		canvas.drawBitmap(mMem, mRectIcon, mRectMem, mPaint);
+    		canvas.drawBitmap(mCpu, mRectIcon, mRectCpu, mPaint);  	
+    		canvas.drawBitmap(mSD, mRectIcon, mRectSD, mPaint);
+    		break;
+    	}
+
 	}
 
 	private void drawMultiText(Canvas canvas, float x, float y, int spaceX) {
