@@ -16,6 +16,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 
 public class OperationView extends View implements
@@ -50,6 +51,7 @@ public class OperationView extends View implements
 	private String mPattern;
 	
 	private boolean mOperationStart = false;
+	
 	private stateListener mListener = null;
 	
 	
@@ -238,15 +240,20 @@ public class OperationView extends View implements
 					isactioncomplete = false;
 					Log.d(VIEW_TAG, "finished srcX: " + srcX + " srcY:" + srcY + " source: "+ mSource + "\n");
 					Log.d(VIEW_TAG, "finished destX: " + destX + " destY:" + destY + " dest: "+ mDest + "\n");
-					mResult = "copy form " + mSourceName + " to " + mDestName + "\n"; 
-					if(mSource > 0 && mDest > 0 && mSource != mDest) {
-						mOperationStart = true;
-						if (mListener != null) {
-				            mListener.onOperationStart(mOperationStart);
+					if(!mOperationStart) {
+						mResult = "copy form " + mSourceName + " to " + mDestName + "\n"; 
+						if(mSource > 0 && mDest > 0 && mSource != mDest) {
+							mOperationStart = true;
+							if (mListener != null) {
+								mListener.onOperationStart(mOperationStart);
+							}
+						}
+						else {
+							mResult = "Drag from one icon to another, Please Retry! \n";
 						}
 					}
 					else {
-						mResult = "Drag from one icon to another, Please Retry! \n";
+						Toast.makeText(getContext(), "Test Operation is running, please wait...", Toast.LENGTH_LONG).show();
 					}
 					postInvalidate();
 				}
@@ -394,5 +401,11 @@ public class OperationView extends View implements
 	
 	public String getOperationResult() {
 		return mResult;
+	}
+	public int getSourceDisk() {
+		return mSource;
+	}
+	public int getDestDisk() {
+		return mDest;
 	}
 }
