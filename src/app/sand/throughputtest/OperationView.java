@@ -46,6 +46,11 @@ public class OperationView extends View implements
 	private Rect mRectMemSelect;
 	private Rect mRectCpuSelect;
 	private Rect mRectSDSelect;
+	private Object mDataLength;
+	private String mPattern;
+	
+	private boolean mOperationStart = false;
+	private stateListener mListener = null;
 	
 	
 	
@@ -112,8 +117,7 @@ public class OperationView extends View implements
         mSourceSelected = 0;
         
         OnTouchListener onTouch = new OnTouchListener() {
-			
-			
+
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -234,12 +238,15 @@ public class OperationView extends View implements
 					isactioncomplete = false;
 					Log.d(VIEW_TAG, "finished srcX: " + srcX + " srcY:" + srcY + " source: "+ mSource + "\n");
 					Log.d(VIEW_TAG, "finished destX: " + destX + " destY:" + destY + " dest: "+ mDest + "\n");
-					mResult = "copy form " + mSourceName + " to " + mDestName; 
-					if(mSource > 0 && mDest > 0) {
-						mResult += " The test result is:\n"; 
+					mResult = "copy form " + mSourceName + " to " + mDestName + "\n"; 
+					if(mSource > 0 && mDest > 0 && mSource != mDest) {
+						mOperationStart = true;
+						if (mListener != null) {
+				            mListener.onOperationStart(mOperationStart);
+						}
 					}
 					else {
-						mResult += " Please Retry! \n";
+						mResult = "Drag from one icon to another, Please Retry! \n";
 					}
 					postInvalidate();
 				}
@@ -360,8 +367,32 @@ public class OperationView extends View implements
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		// TODO Auto-generated method stub
-
+		mDataLength = mPref.getString("DataLength", "1024000");
+		mPattern = mPref.getString("DataPattern", "0");
+		Log.d(VIEW_TAG, "DataLength: " + mDataLength + " Pattern: " + mPattern + "\n");
 	}
 
+	public interface stateListener {
+		public void onOperationStart(boolean state);
+	}
+	
+	public void registerStatelistener (stateListener listener) {
+        mListener  = listener;
+    }
+	
+	public boolean getOperationState() {
+		return mOperationStart;
+	}
+	
+	public void setOperationState(boolean state) {
+		mOperationStart = state;
+	}
+	
+	public void setOperationResult(String str) {
+		mResult = str;
+	}
+	
+	public String getOperationResult() {
+		return mResult;
+	}
 }

@@ -1,0 +1,7 @@
+# cache for current jar dependency. DO NOT EDIT.
+# format is <lastModified> <length> <SHA-1> <path>
+# Encoding is UTF-8
+1399255526669 349134 21297ae2bf22a0ce81c9b59992cf0693eec45d5b D:\eclipse_project\ThroughputTest\libs\android-support-v7-appcompat.jar
+1399255526669 349134 21297ae2bf22a0ce81c9b59992cf0693eec45d5b D:\eclipse_project\android-support-v7-appcompat\libs\android-support-v7-appcompat.jar
+1399255524655 648327 ded9acc6a9792b8f1afc470f0c9cd36d178914cd D:\eclipse_project\android-support-v7-appcompat\libs\android-support-v4.jar
+1399557204000 648327 ded9acc6a9792b8f1afc470f0c9cd36d178914cd D:\eclipse_project\ThroughputTest\libs\android-support-v4.jar
