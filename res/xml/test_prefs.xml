@@ -3,11 +3,11 @@
     <EditTextPreference 
         android:summary="Length of test data copyed from one device to another" 
         android:title="Length of Test Data Unit(Bytes)" 
-        android:key="DataLength" android:defaultValue="1024000"/>
+        android:key="DataLength"/>
     <ListPreference 
         android:entryValues="@array/pattern_value" 
         android:entries="@array/pattern" 
-        android:key="DataPattern" 
+        android:key="Data Pattern" 
         android:title="Pattern of the test data" 
         android:summary="the pattern of the test data"/>
 
