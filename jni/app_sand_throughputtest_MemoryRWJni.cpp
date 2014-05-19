@@ -303,7 +303,7 @@ static void alignwrite(void * buf, unsigned long length)
 }
 
 
-JNIEXPORT jstring JNICALL Java_com_tool_perfermance_MemoryRWJni_MemoryReadRate
+JNIEXPORT jstring JNICALL Java_app_sand_throughputtest_MemoryRWJni_MemoryReadRate
   (JNIEnv * env, jobject arg, jlong datasize) {
 
     char*  str;
@@ -312,7 +312,7 @@ JNIEXPORT jstring JNICALL Java_com_tool_perfermance_MemoryRWJni_MemoryReadRate
     long rate;
     long length = datasize;
     //D("read %d bytes", length);
-    asprintf(&str, "All the rate unit is MB/s.\n\nNormal Test : 32 bytes Read.\n");
+    asprintf(&str, "All the rate unit is MB/s.\nNormal Test : 32 bytes Read.\n");
     strlcpy(strbuffer, str, sizeof strbuffer);
     free(str);
     
@@ -454,7 +454,7 @@ JNIEXPORT jstring JNICALL Java_com_tool_perfermance_MemoryRWJni_MemoryReadRate
 }
 
 
-JNIEXPORT jstring JNICALL Java_com_tool_perfermance_MemoryRWJni_MemoryWriteRate
+JNIEXPORT jstring JNICALL Java_app_sand_throughputtest_MemoryRWJni_MemoryWriteRate
   (JNIEnv * env, jobject arg, jlong datasize) {
     long duringtime;   
     long rate;
@@ -571,7 +571,7 @@ JNIEXPORT jstring JNICALL Java_com_tool_perfermance_MemoryRWJni_MemoryWriteRate
         }
         free(buffer2);
     }
-    asprintf(&str, "\n\nDisalignment Test 16 bytes Write\n");
+    asprintf(&str, "\nDisalignment Test 16 bytes Write\n");
     strlcat(strbuffer, str, sizeof strbuffer);
     free(str);
    

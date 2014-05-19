@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <EditTextPreference 
-        android:summary="Length of test data copyed from one device to another" 
-        android:title="Length of Test Data Unit(Bytes)" 
-        android:key="DataLength"/>
+        android:summary="Buffer Size" 
+        android:title="Size of the buffer in throughput testing(Bytes)" 
+        android:key="BufferSize" android:defaultValue="65536"/>
     <ListPreference 
         android:entryValues="@array/pattern_value" 
         android:entries="@array/pattern" 
-        android:key="Data Pattern" 
+        android:key="DataPattern" 
         android:title="Pattern of the test data" 
         android:summary="the pattern of the test data"/>
 
