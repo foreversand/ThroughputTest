@@ -118,6 +118,8 @@ public class OperationView extends View implements
         		   		  mRectSDSelect.centerY() + mRectSDSelect.height() / 4);
         mSourceSelected = 0;
         
+        
+        // perform the drag action
         OnTouchListener onTouch = new OnTouchListener() {
 
 
@@ -312,6 +314,8 @@ public class OperationView extends View implements
 
 	}
 
+	//draw the multi-line text. The space and symbol can not be the beginning char of the line.
+	//do not support the scroll view
 	private void drawMultiText(Canvas canvas, float x, float y, int spaceX) {
 		int textlength = mResult.length();
 		int curlength = 0;

@@ -1,3 +1,7 @@
+//Copyright FAN XIAODONG 2014 
+//The asm code refer to the ARM GCC Inline Assembler  programming tutorial
+
+
 #include "app_sand_throughputtest_MemoryRWJni.h"
 #include <time.h>
 #include <stdio.h>

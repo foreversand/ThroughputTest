@@ -17,7 +17,7 @@ public class DiskOperation {
 	}
 	
 	private String fileCopyThroughput(int src, int dest, long buffersize){
-		return "no result";
+		return "no result \n";
 	}
 	
 	public String operationThroughputTest(int src, int dest, long buffersize) {

@@ -11,7 +11,7 @@ import android.preference.PreferenceFragment;
 import android.util.Log;
 
 
-
+//preference fragment
 public class SettingsActivity extends PreferenceActivity {
 	private static final String SETTING_TAG = "SettingActivity";
 
@@ -53,7 +53,6 @@ public class SettingsActivity extends PreferenceActivity {
 
 		@Override
 		public void onAttach(Activity activity) {
-			// TODO Auto-generated method stub
 			super.onAttach(activity);
 			Log.d(SETTING_TAG, "attach a fragment to an activity!\n");
 		}

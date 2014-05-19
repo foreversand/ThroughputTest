@@ -3,11 +3,7 @@ package app.sand.throughputtest;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -53,7 +49,7 @@ public class MainActivity extends Activity implements OperationView.stateListene
 				break;
 			}
 			case PROGRESS_UPDATE: {
-				mTestTime = 1 + (Integer) msg.obj / 10;
+				mTestTime = (Integer) msg.obj / 10;
 				mProgressBar.setProgress((Integer) msg.obj);
 				mOperationView.setOperationResult("testing......" + msg.obj + "%\n");
 				mOperationView.postInvalidate();
@@ -93,7 +89,7 @@ public class MainActivity extends Activity implements OperationView.stateListene
 					Log.w("ExternalStorage", "Error writing " + file, e);
 				}	
 				
-				mOperationView.setOperationResult("TESK OK!\n\n\nThe result is put in directory \"" + path.toString() + "\".\n" + mTestResult);
+				mOperationView.setOperationResult("TESK OK!\n\n\nThe result is put in directory \"" + path.toString() + "\".\n");
 				mOperationView.postInvalidate();
 				break;
 			}
@@ -162,9 +158,9 @@ public class MainActivity extends Activity implements OperationView.stateListene
 			for (int i = 1; i < TEST_COUNT + 1; i++) {
 				result = diskOp.operationThroughputTest(src, dest, buffersize);
 				//Log.d(MAIN_TAG, result);
-				msg = handler.obtainMessage(UPDATE_RESULT, result);
-				handler.sendMessage(msg);
 				msg = handler.obtainMessage(PROGRESS_UPDATE, i * 10);
+				handler.sendMessage(msg);
+				msg = handler.obtainMessage(UPDATE_RESULT, result);
 				handler.sendMessage(msg);
 			}
 
@@ -176,14 +172,6 @@ public class MainActivity extends Activity implements OperationView.stateListene
 			handler.sendMessage(msg);
 			
 		}
-		
-//		private void sleep() {
-//			try {
-//				Thread.sleep(500);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
 		
 	}
 	
